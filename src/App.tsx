@@ -1,15 +1,14 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { randomBytes } from 'crypto';
 import { Bytes, KeyType, PrivateKey } from '@greymass/eosio';
 
 function App() {
     useEffect(() => {
-        const bytes = randomBytes(32);
-        const privateKey = new PrivateKey(KeyType.K1, new Bytes(bytes));
+        const privateKey = new PrivateKey(
+            KeyType.K1,
+            new Bytes(new TextEncoder().encode('12345678901234567890123456789012'))
+        );
         console.log(privateKey.toPublic());
     });
     return (

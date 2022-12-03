@@ -2,14 +2,10 @@ import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { Bytes, KeyType, PrivateKey } from '@greymass/eosio';
-
+import { App as APP } from 'tonomy-id-sdk';
 function App() {
     useEffect(() => {
-        const privateKey = new PrivateKey(
-            KeyType.K1,
-            new Bytes(new TextEncoder().encode('12345678901234567890123456789012'))
-        );
-        console.log(privateKey.toPublic());
+        APP.onPressLogin(window).then((result) => console.log(result));
     });
     return (
         <div className="App">

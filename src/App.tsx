@@ -7,8 +7,9 @@ function App() {
     const [jwt, setJwt] = useState('');
     useEffect(() => {
         APP.onPressLogin(window).then((result) => {
-            if (result) {
+            if (result && mobileCheck()) {
                 setJwt(result);
+                // window.location.replace('tonomy-id://test/home?jwt=' + result);
             }
         });
     });
@@ -22,7 +23,7 @@ function App() {
                 <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
                     Learn React
                 </a>
-                <a href={'tonomy-id://tonomy-id-website/sso-login?jwt=' + jwt}>open App</a>
+                {mobileCheck() && <a href={'tonomy-id://test/home?jwt=' + jwt}>open App</a>}
             </header>
         </div>
     );

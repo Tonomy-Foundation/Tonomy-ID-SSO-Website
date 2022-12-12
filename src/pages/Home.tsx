@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { App as TonomyApp, JWTLoginPayload } from 'tonomy-id-sdk';
 import { TH1, TP } from '../components/THeadings';
 import TImage from '../components/TImage';
@@ -13,8 +13,9 @@ const styles = {
     },
 };
 
-function Home(props: HTMLDivElement) {
-    async function sendRequestToMobile(requests: JWTLoginPayload[], channel) {
+function Home() {
+    async function sendRequestToMobile(jwtRequests: string[], channel = 'mobile') {
+        console.log('sendRequestToMobile', jwtRequests);
         /*
         if (loggedIn) {
             send a new request with
@@ -39,7 +40,12 @@ function Home(props: HTMLDivElement) {
         } catch (e) {
             console.error(e);
             // TODO handle error
+            return;
         }
+
+        const tonomyJwt = (await TonomyApp.onPressLogin({ callbackPath: '/callback', redirect: false })) as string;
+
+        sendRequestToMobile([verifiedJwt.jwt, tonomyJwt]);
         /*
         let idTonomyJwt: string;
         const loggedIn = user logged into id.tonomy.foundation (check local storage and validate key is still authorized)
@@ -62,9 +68,15 @@ function Home(props: HTMLDivElement) {
         */
     }
 
+    // ensure useEffect is only called once
+    const [rendered, setRendered] = useState(false);
+
     useEffect(() => {
-        handleRequests();
-    });
+        setRendered(true);
+        if (!rendered) {
+            handleRequests();
+        }
+    }, [rendered]);
 
     return (
         <div style={styles.container}>

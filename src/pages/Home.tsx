@@ -1,19 +1,15 @@
-import { createStyles, makeStyles } from '@material-ui/core';
 import React, { useEffect } from 'react';
 import { App as TonomyApp, JWTLoginPayload } from 'tonomy-id-sdk';
-import { TH1, TH3, TP } from '../components/THeadings';
+import { TH1, TP } from '../components/THeadings';
 import TImage from '../components/TImage';
-import TProgressBar from '../components/TProgressBar';
+import TProgressCircle from '../components/TProgressCircle';
 
 const styles = {
     container: {
         flex: 1,
-        // flexDirection: 'column',
         marginTop: '20%',
-        // textAlign: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-        // textAlign: 'center',
     },
 };
 
@@ -69,9 +65,7 @@ function Home() {
             <TImage height={62} src={require('../assets/tonomy-logo1024.png')} alt="Tonomy Logo" />
             <TH1>Tonomy</TH1>
             <TP>Loading QR code request</TP>
-            <TH3>LOADING...</TH3>
-            <TProgressBar value={30} />
-            <TP>Please wait (30%)</TP>
+            <TProgressCircle />
         </div>
     );
 }

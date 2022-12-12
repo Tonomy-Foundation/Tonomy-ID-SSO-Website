@@ -3,17 +3,17 @@ import { App as TonomyApp, JWTLoginPayload } from 'tonomy-id-sdk';
 import { TH1, TP } from '../components/THeadings';
 import TImage from '../components/TImage';
 import TProgressCircle from '../components/TProgressCircle';
+import { JWTVerified } from 'tonomy-id-sdk/node_modules/did-jwt';
 
 const styles = {
     container: {
         flex: 1,
-        marginTop: '20%',
-        justifyContent: 'center',
-        alignItems: 'center',
+        textAlign: 'center' as any,
+        alignSelf: 'center',
     },
 };
 
-function Home() {
+function Home(props: HTMLDivElement) {
     async function sendRequestToMobile(requests: JWTLoginPayload[], channel) {
         /*
         if (loggedIn) {
@@ -32,8 +32,14 @@ function Home() {
     }
 
     async function handleRequests() {
-        const verifiedJwt = await TonomyApp.onRedirectLogin();
-        console.log(verifiedJwt);
+        let verifiedJwt: JWTVerified;
+        try {
+            verifiedJwt = await TonomyApp.onRedirectLogin();
+            console.log(verifiedJwt);
+        } catch (e) {
+            console.error(e);
+            // TODO handle error
+        }
         /*
         let idTonomyJwt: string;
         const loggedIn = user logged into id.tonomy.foundation (check local storage and validate key is still authorized)
@@ -67,7 +73,7 @@ function Home() {
             <TP>Loading QR code request</TP>
             <TProgressCircle />
         </div>
-    );
+    ) as any;
 }
 
-export default Home;
+export default Home as any;

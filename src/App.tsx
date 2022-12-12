@@ -2,12 +2,18 @@ import { Container } from '@material-ui/core';
 import React from 'react';
 import Home from './pages/Home';
 
-function App() {
+const styles = {
+    container: {
+        display: 'flex',
+        height: '100vh',
+        justifyContent: 'center',
+    },
+};
+
+export default function App() {
     return (
-        <Container maxWidth="sm">
+        <Container maxWidth="sm" style={styles.container}>
             <Home />
         </Container>
     );
 }
-
-export default App;

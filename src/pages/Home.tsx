@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { App as TonomyApp, JWTLoginPayload } from 'tonomy-id-sdk';
+import { TH1, TP } from '../components/THeadings';
+import TImage from '../components/TImage';
 
 function Home() {
     async function sendRequestToMobile(requests: JWTLoginPayload[], channel) {
@@ -50,7 +52,9 @@ function Home() {
 
     return (
         <div>
-            <p>id.tonomy.foundation (localhost:3000)</p>
+            <TImage src="../assets/tonomy-logo1024.png" alt="Tonomy Logo" />
+            <TH1>Tonomy</TH1>
+            <TP>Loading QR code request</TP>
         </div>
     );
 }

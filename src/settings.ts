@@ -47,14 +47,14 @@ switch (env) {
         throw new Error('Unknown environment: ' + env);
 }
 
-if (process.env.BLOCKCHAIN_URL) {
-    console.log(`Using BLOCKCHAIN_URL from env:  ${process.env.BLOCKCHAIN_URL}`);
-    config.blockchainUrl = process.env.BLOCKCHAIN_URL;
+if (process.env.REACT_APP_BLOCKCHAIN_URL) {
+    console.log(`Using BLOCKCHAIN_URL from env:  ${process.env.REACT_APP_BLOCKCHAIN_URL}`);
+    config.blockchainUrl = process.env.REACT_APP_BLOCKCHAIN_URL;
 }
 
-if (process.env.TONOMY_ID_LINK) {
-    console.log(`Using SSO_WEBSITE_ORIGIN from env:  ${process.env.TONOMY_ID_LINK}`);
-    config.tonomyIdLink = process.env.TONOMY_ID_LINK;
+if (process.env.REACT_APP_TONOMY_ID_LINK) {
+    console.log(`Using SSO_WEBSITE_ORIGIN from env:  ${process.env.REACT_APP_TONOMY_ID_LINK}`);
+    config.tonomyIdLink = process.env.REACT_APP_TONOMY_ID_LINK;
 }
 
 settings.config = config;

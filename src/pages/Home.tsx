@@ -84,7 +84,7 @@ function Home() {
 
     return (
         <div style={styles.container}>
-            <TImage height={62} src={require('../assets/tonomy-logo1024.png')} alt="Tonomy Logo" />
+            <TImage height={62} src={require('../assets/tonomy/tonomy-logo1024.png')} alt="Tonomy Logo" />
             <TH1>Tonomy</TH1>
             <TP>Loading QR code request</TP>
             <TProgressCircle />

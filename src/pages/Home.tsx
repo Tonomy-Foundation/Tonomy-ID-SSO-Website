@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { App as TonomyApp, JWTLoginPayload } from 'tonomy-id-sdk';
+import { App as TonomyApp, setSettings } from 'tonomy-id-sdk';
 import { TH1, TP } from '../components/THeadings';
 import TImage from '../components/TImage';
 import TProgressCircle from '../components/TProgressCircle';
 import { JWTVerified } from 'tonomy-id-sdk/node_modules/did-jwt';
+import settings from '../settings';
+
+setSettings({
+    ssoWebsiteOrigin: settings.config.ssoWebsiteOrigin,
+});
 
 const styles = {
     container: {
@@ -36,7 +41,6 @@ function Home() {
         let verifiedJwt: JWTVerified;
         try {
             verifiedJwt = await TonomyApp.onRedirectLogin();
-            console.log(verifiedJwt);
         } catch (e) {
             console.error(e);
             // TODO handle error

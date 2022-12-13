@@ -53,7 +53,7 @@ if (process.env.REACT_APP_BLOCKCHAIN_URL) {
 }
 
 if (process.env.REACT_APP_TONOMY_ID_LINK) {
-    console.log(`Using SSO_WEBSITE_ORIGIN from env:  ${process.env.REACT_APP_TONOMY_ID_LINK}`);
+    console.log(`Using TONOMY_ID_LINK from env:  ${process.env.REACT_APP_TONOMY_ID_LINK}`);
     config.tonomyIdLink = process.env.REACT_APP_TONOMY_ID_LINK;
 }
 

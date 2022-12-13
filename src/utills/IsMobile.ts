@@ -1,3 +1,4 @@
+//http://detectmobilebrowsers.com/
 /* eslint-disable no-useless-escape */
 export const mobileCheck = function () {
     let check = false;

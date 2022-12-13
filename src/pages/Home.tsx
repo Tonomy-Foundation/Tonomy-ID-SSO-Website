@@ -5,6 +5,7 @@ import TImage from '../components/TImage';
 import TProgressCircle from '../components/TProgressCircle';
 import { JWTVerified } from 'tonomy-id-sdk/node_modules/did-jwt';
 import settings from '../settings';
+import { isMobile } from '../utills/IsMobile';
 
 setSettings({
     blockchainUrl: settings.config.blockchainUrl,
@@ -20,21 +21,18 @@ const styles = {
 
 function Home() {
     async function sendRequestToMobile(jwtRequests: string[], channel = 'mobile') {
-        console.log('sendRequestToMobile', jwtRequests);
-        /*
-        if (loggedIn) {
-            send a new request with
-            {
-                verifiedJwt
-            }
+        if (isMobile()) {
+            console.log('sendRequestToMobile', jwtRequests);
+            const requests = JSON.stringify(jwtRequests);
+            window.location.replace(`${settings.config.tonomyIdLink}?jwt=${requests}`);
+
+            // TODO
+            // wait 1-2 seconds
+            // if this code runs then the link didnt work
         } else {
-            send a new request with
-            {
-                idTonomyJwt,
-                verifiedJwt
-            }
+            // Use communication microservice to send request to mobile
+            alert('Run on browser to test');
         }
-        */
     }
 
     async function handleRequests() {
@@ -43,6 +41,7 @@ function Home() {
             verifiedJwt = await TonomyApp.onRedirectLogin();
         } catch (e) {
             console.error(e);
+            alert(e);
             // TODO handle error
             return;
         }

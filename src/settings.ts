@@ -15,7 +15,7 @@ type ConfigType = {
         logo48: string;
         logo1024: string;
     };
-    ssoWebsiteOrigin: string;
+    tonomyIdLink: string;
 };
 
 type SettingsType = {
@@ -47,9 +47,14 @@ switch (env) {
         throw new Error('Unknown environment: ' + env);
 }
 
-if (process.env.SSO_WEBSITE_ORIGIN) {
-    console.log(`Using SSO_WEBSITE_ORIGIN from env:  ${process.env.SSO_WEBSITE_ORIGIN}`);
-    config.ssoWebsiteOrigin = process.env.SSO_WEBSITE_ORIGIN;
+if (process.env.BLOCKCHAIN_URL) {
+    console.log(`Using BLOCKCHAIN_URL from env:  ${process.env.BLOCKCHAIN_URL}`);
+    config.blockchainUrl = process.env.BLOCKCHAIN_URL;
+}
+
+if (process.env.TONOMY_ID_LINK) {
+    console.log(`Using SSO_WEBSITE_ORIGIN from env:  ${process.env.TONOMY_ID_LINK}`);
+    config.tonomyIdLink = process.env.TONOMY_ID_LINK;
 }
 
 settings.config = config;

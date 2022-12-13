@@ -7,7 +7,7 @@ import { JWTVerified } from 'tonomy-id-sdk/node_modules/did-jwt';
 import settings from '../settings';
 
 setSettings({
-    ssoWebsiteOrigin: settings.config.ssoWebsiteOrigin,
+    blockchainUrl: settings.config.blockchainUrl,
 });
 
 const styles = {

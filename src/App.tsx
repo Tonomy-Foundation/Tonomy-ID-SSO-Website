@@ -1,11 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Bytes, KeyType, PrivateKey } from '@greymass/eosio';
 import { App as APP } from 'tonomy-id-sdk';
+import { mobileCheck } from './utills/IsMobile';
 function App() {
+    const [jwt, setJwt] = useState('');
     useEffect(() => {
-        APP.onPressLogin(window).then((result) => console.log(result));
+        APP.onPressLogin(window).then((result) => {
+            if (result && mobileCheck()) {
+                setJwt(result);
+                // window.location.replace('tonomy-id://test/home?jwt=' + result);
+            }
+        });
     });
     return (
         <div className="App">
@@ -17,6 +23,7 @@ function App() {
                 <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
                     Learn React
                 </a>
+                {mobileCheck() && <a href={'tonomy-id://test/home?jwt=' + jwt}>open App</a>}
             </header>
         </div>
     );

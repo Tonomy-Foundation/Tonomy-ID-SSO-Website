@@ -13,7 +13,7 @@ setSettings({
 const styles = {
     container: {
         flex: 1,
-        textAlign: 'center' as any,
+        textAlign: 'center' as const,
         alignSelf: 'center',
     },
 };

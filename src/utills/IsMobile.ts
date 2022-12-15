@@ -1,6 +1,6 @@
 //http://detectmobilebrowsers.com/
 /* eslint-disable no-useless-escape */
-export const mobileCheck = function () {
+export const isMobile = function () {
     let check = false;
     (function (a) {
         if (
@@ -16,7 +16,7 @@ export const mobileCheck = function () {
     return check;
 };
 
-export const mobileAndTabletCheck = function () {
+export const isMobileOrTablet = function () {
     let check = false;
     (function (a) {
         if (

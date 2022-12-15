@@ -3,7 +3,6 @@ import { App as TonomyApp, setSettings } from 'tonomy-id-sdk';
 import { TH1, TP } from '../components/THeadings';
 import TImage from '../components/TImage';
 import TProgressCircle from '../components/TProgressCircle';
-import { JWTVerified } from 'tonomy-id-sdk/node_modules/did-jwt';
 import settings from '../settings';
 import { isMobile } from '../utills/IsMobile';
 
@@ -36,7 +35,7 @@ function Home() {
     }
 
     async function handleRequests() {
-        let verifiedJwt: JWTVerified;
+        let verifiedJwt;
         try {
             verifiedJwt = await TonomyApp.onRedirectLogin();
         } catch (e) {

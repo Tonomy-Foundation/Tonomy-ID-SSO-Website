@@ -1,4 +1,4 @@
-import { LinearProgress } from '@material-ui/core';
+import { LinearProgress } from '@mui/material';
 import React from 'react';
 
 export default function TProgressBar(props: React.ComponentProps<typeof LinearProgress>) {

@@ -39,3 +39,14 @@ Linting is done with `eslint`. Install the recommended VS Code plugin to see mar
 ```bash
 npm run lint
 ```
+
+### Configuration and environment variables
+
+Set the configuration variables in the desired file in `./src/config`
+
+Config file is choosing based on the value of environment variable `NODE_ENV`. `config.json` is used by default.
+
+Other environment variables override the values in the config file:
+
+- REACT_APP_BLOCKCHAIN_URL
+- REACT_APP_TONOMY_ID_LINK

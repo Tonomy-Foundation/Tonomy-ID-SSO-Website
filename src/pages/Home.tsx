@@ -42,6 +42,7 @@ function Home() {
             console.error(e);
             alert(e);
             // TODO handle error
+
             return;
         }
 

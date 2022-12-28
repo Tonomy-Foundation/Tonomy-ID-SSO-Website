@@ -21,9 +21,8 @@ const styles = {
 function Home() {
     async function sendRequestToMobile(jwtRequests: string[], channel = 'mobile') {
         if (isMobile()) {
-            console.log('sendRequestToMobile', jwtRequests);
             const requests = JSON.stringify(jwtRequests);
-            window.location.replace(`${settings.config.tonomyIdLink}?jwt=${requests}`);
+            window.location.replace(`${settings.config.tonomyIdLink}?requests=${requests}`);
 
             // TODO
             // wait 1-2 seconds

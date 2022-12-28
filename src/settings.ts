@@ -15,6 +15,11 @@ type ConfigType = {
         logo48: string;
         logo1024: string;
     };
+    links: {
+        readMoreDownload: string;
+        playStoreDownload: string;
+        appleStoreDownload: string;
+    };
     tonomyIdLink: string;
 };
 

@@ -1,7 +1,7 @@
 import { Container } from '@mui/material';
 import React from 'react';
 import Home from './pages/Home';
-import New from './pages/New';
+import DownloadApp from './pages/DownloadApp';
 
 const styles = {
     container: {
@@ -15,7 +15,7 @@ const styles = {
 export default function App() {
     return (
         <Container maxWidth="sm" style={styles.container}>
-            <New></New>
+            <DownloadApp></DownloadApp>
         </Container>
     );
 }

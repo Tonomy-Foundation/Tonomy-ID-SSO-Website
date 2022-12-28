@@ -20,7 +20,7 @@ const styles = {
 };
 
 function Home() {
-    const [showQR, setShowQR] = useState<string>('');
+    const [showQR, setShowQR] = useState<string>();
     async function sendRequestToMobile(jwtRequests: string[], channel = 'mobile') {
         if (isMobile()) {
             console.log('sendRequestToMobile', jwtRequests);
@@ -31,6 +31,7 @@ function Home() {
             // wait 1-2 seconds
             // if this code runs then the link didnt work
         } else {
+            setShowQR(JSON.stringify({ text: 'hello-world' }));
             // Use communication microservice to send request to mobile
             // alert('Run on browser to test');
         }
@@ -51,7 +52,7 @@ function Home() {
         const tonomyJwt = (await TonomyApp.onPressLogin({ callbackPath: '/callback', redirect: false })) as string;
 
         sendRequestToMobile([verifiedJwt.jwt, tonomyJwt]);
-        setShowQR(JSON.stringify([verifiedJwt.jwt, tonomyJwt])); //TODO: change the qr to only one when user is loggedin
+        //TODO: change the qr to only one when user is loggedin
         /*
         let idTonomyJwt: string;
         const loggedIn = user logged into id.tonomy.foundation (check local storage and validate key is still authorized)

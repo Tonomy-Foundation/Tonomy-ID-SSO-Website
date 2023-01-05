@@ -19,6 +19,7 @@
         "process": "^0.11.10",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "react-qr-code": "^2.0.11",
         "react-scripts": "5.0.1",
         "tonomy-id-sdk": "github:Tonomy-Foundation/Tonomy-ID-SDK#development",
         "typescript": "^4.7.4",

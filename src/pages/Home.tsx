@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { UserApps, setSettings } from 'tonomy-id-sdk';
+import QRCode from 'react-qr-code';
 import { TH1, TP } from '../components/THeadings';
 import TImage from '../components/TImage';
 import TProgressCircle from '../components/TProgressCircle';
@@ -21,6 +22,7 @@ const styles = {
 };
 
 function Home() {
+    const [showQR, setShowQR] = useState<string>();
     async function sendRequestToMobile(jwtRequests: string[], channel = 'mobile') {
         if (isMobile()) {
             const requests = JSON.stringify(jwtRequests);
@@ -30,8 +32,9 @@ function Home() {
             // wait 1-2 seconds
             // if this code runs then the link didnt work
         } else {
+            setShowQR(JSON.stringify({ text: 'hello-world' }));
             // Use communication microservice to send request to mobile
-            alert('Run on browser to test');
+            // alert('Run on browser to test');
         }
     }
 
@@ -50,6 +53,7 @@ function Home() {
         const tonomyJwt = (await UserApps.onPressLogin({ callbackPath: '/callback', redirect: false })) as string;
 
         sendRequestToMobile([verifiedJwt.jwt, tonomyJwt]);
+        //TODO: change the qr to only one when user is loggedin
         /*
         let idTonomyJwt: string;
         const loggedIn = user logged into id.tonomy.foundation (check local storage and validate key is still authorized)
@@ -71,23 +75,36 @@ function Home() {
         }
         */
     }
-
-    // ensure useEffect is only called once
-    const [rendered, setRendered] = useState(false);
+    function renderQROrLoading() {
+        if (!isMobile()) {
+            return (
+                <>
+                    <TP>Scan the QR code with the Tonomy ID app</TP>
+                    {!showQR && <TProgressCircle />}
+                    {showQR && <QRCode value={showQR}></QRCode>}
+                </>
+            );
+        } else {
+            return (
+                <>
+                    <TP>Loading QR code request</TP>
+                    <TProgressCircle />
+                </>
+            );
+        }
+    }
 
     useEffect(() => {
-        setRendered(true);
-        if (!rendered) {
-            handleRequests();
-        }
-    }, [rendered]);
+        // console.log();
+        handleRequests();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div style={styles.container}>
             <TImage height={62} src={require('../assets/tonomy/tonomy-logo1024.png')} alt="Tonomy Logo" />
             <TH1>{settings.config.appName}</TH1>
-            <TP>Loading QR code request</TP>
-            <TProgressCircle />
+            {renderQROrLoading()}
         </div>
     ) as any;
 }

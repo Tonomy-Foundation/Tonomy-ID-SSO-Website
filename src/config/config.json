@@ -18,5 +18,5 @@
         "playStoreDownload": "https://play.google.com/store/apps/details?id=foundation.tonomy.projects.tonomyidstaging&hl=en&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1",
         "appleStoreDownload": "#"
     },
-    "tonomyIdLink": "tonomy-id://SSO"
+    "tonomyIdLink": "tonomy-id-development://SSO"
 }

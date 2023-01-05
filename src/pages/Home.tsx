@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { UserApps, setSettings } from 'tonomy-id-sdk';
 import QRCode from 'react-qr-code';
-import { App as TonomyApp, setSettings } from 'tonomy-id-sdk';
 import { TH1, TP } from '../components/THeadings';
 import TImage from '../components/TImage';
 import TProgressCircle from '../components/TProgressCircle';
@@ -23,9 +23,8 @@ function Home() {
     const [showQR, setShowQR] = useState<string>();
     async function sendRequestToMobile(jwtRequests: string[], channel = 'mobile') {
         if (isMobile()) {
-            console.log('sendRequestToMobile', jwtRequests);
             const requests = JSON.stringify(jwtRequests);
-            window.location.replace(`${settings.config.tonomyIdLink}?jwt=${requests}`);
+            window.location.replace(`${settings.config.tonomyIdLink}?requests=${requests}`);
 
             // TODO
             // wait 1-2 seconds
@@ -40,7 +39,7 @@ function Home() {
     async function handleRequests() {
         let verifiedJwt;
         try {
-            verifiedJwt = await TonomyApp.onRedirectLogin();
+            verifiedJwt = await UserApps.onRedirectLogin();
         } catch (e) {
             console.error(e);
             alert(e);
@@ -49,7 +48,7 @@ function Home() {
             return;
         }
 
-        const tonomyJwt = (await TonomyApp.onPressLogin({ callbackPath: '/callback', redirect: false })) as string;
+        const tonomyJwt = (await UserApps.onPressLogin({ callbackPath: '/callback', redirect: false })) as string;
 
         sendRequestToMobile([verifiedJwt.jwt, tonomyJwt]);
         //TODO: change the qr to only one when user is loggedin

@@ -1,14 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
+import { Container } from '@mui/material';
+import { RouterProvider } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
+import './index.css';
+import router from './routes/root';
+
+const styles = {
+    container: {
+        display: 'flex',
+        height: '100vh',
+        justifyContent: 'center',
+    },
+};
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
     // this will make components render twice in development to catch errors
     <React.StrictMode>
-        <App />
+        <Container maxWidth="sm" style={styles.container}>
+            <RouterProvider router={router}></RouterProvider>
+        </Container>
     </React.StrictMode>
 );
 

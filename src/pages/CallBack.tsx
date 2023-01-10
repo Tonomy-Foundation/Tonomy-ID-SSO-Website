@@ -22,14 +22,26 @@ export default function CallBackPage() {
         const result = await UserApps.verifyRequests(requests);
 
         const redirectJwt = result.find((jwtVerified) => jwtVerified.payload.origin !== location.origin);
+        const ssoJwt = result.find((jwtVerified) => jwtVerified.payload.origin === location.origin);
         if (!redirectJwt) {
             throwError('missing jwt', SdkErrors.JwtNotValid);
         }
+        if (ssoJwt) {
+            try {
+                const verifiedLoginSso = await UserApps.verifyPrivateKey(accountName);
+                if (verifiedLoginSso) localStorage.setItem('loggedIn', 'true');
+            } catch (e) {
+                // TODO only catch the 404 error and show nothing
+                console.log(e);
+            }
+        }
+
         const redirectJwtPayload = redirectJwt.payload;
         location.replace(
             redirectJwtPayload.origin +
                 redirectJwtPayload.callbackPath +
-                `?username=${username}&accoutName=${accountName}`
+                `?username=${username}&accountName=${accountName}&request=` +
+                redirectJwt.jwt
         );
     }
 

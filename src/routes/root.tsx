@@ -1,17 +1,17 @@
 import { createBrowserRouter } from 'react-router-dom';
-import App from '../App';
+import Home from '../pages/Home';
 import CallBackPage from '../pages/CallBack';
 import DownloadApp from '../pages/DownloadApp';
-import Home from '../pages/Home';
+import Login from '../pages/Login';
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <App />,
+        element: <Home />,
     },
     {
         path: '/login',
-        element: <Home />,
+        element: <Login />,
     },
     {
         path: '/download',

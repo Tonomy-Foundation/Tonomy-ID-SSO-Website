@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from 'react';
-
-import { TP } from '../components/THeadings';
+import React, { useEffect } from 'react';
 import TProgressCircle from '../components/TProgressCircle';
 import { UserApps } from 'tonomy-id-sdk';
-import './main.css';
+import JsKeyManager from '../keymanager';
 
 export default function CallBackPage() {
     useEffect(() => {
-        verifyRequests;
+        verifyRequests();
     }, []);
 
     async function verifyRequests() {
+        console.log('test');
         const { result, accountName, username } = await UserApps.onAppRedirectVerifyRequests();
-
+        console.log(result, accountName);
         const redirectJwt = result.find((jwtVerified) => jwtVerified.payload.origin !== location.origin);
         const ssoJwt = result.find((jwtVerified) => jwtVerified.payload.origin === location.origin);
         if (!redirectJwt) {
+            console.log('test');
             throw new Error("JWT isn't correct");
             //TODO: handle this here
         }
         if (ssoJwt) {
             try {
-                const verifiedLoginSso = await UserApps.verifyKeyExistsForApp(accountName);
+                const verifiedLoginSso = await UserApps.verifyKeyExistsForApp(accountName, new JsKeyManager());
                 if (verifiedLoginSso) localStorage.setItem('loggedIn', 'true');
             } catch (e) {
                 // TODO only catch the 404 error and show nothing
@@ -30,12 +30,12 @@ export default function CallBackPage() {
         }
 
         const redirectJwtPayload = redirectJwt.payload;
-        location.replace(
+        const url =
             redirectJwtPayload.origin +
-                redirectJwtPayload.callbackPath +
-                `?username=${username}&accountName=${accountName}&requests=` +
-                redirectJwt.jwt
-        );
+            redirectJwtPayload.callbackPath +
+            `?username=${username}&accountName=${accountName}&requests=` +
+            JSON.stringify([redirectJwt.jwt]);
+        location.replace(url);
     }
 
     return (

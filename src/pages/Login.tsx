@@ -6,7 +6,7 @@ import TImage from '../components/TImage';
 import TProgressCircle from '../components/TProgressCircle';
 import settings from '../settings';
 import { isMobile } from '../utills/IsMobile';
-import { JsKeyManager } from 'tonomy-id-sdk/test/services/jskeymanager';
+import JsKeyManager from '../keymanager';
 
 setSettings({
     blockchainUrl: settings.config.blockchainUrl,
@@ -47,10 +47,10 @@ function Login() {
 
             return;
         }
-        const jskeyManager: KeyManager = new JsKeyManager() as unknown as KeyManager;
+
         const tonomyJwt = (await UserApps.onPressLogin(
             { callbackPath: '/callback', redirect: false },
-            jskeyManager
+            new JsKeyManager()
         )) as string;
 
         sendRequestToMobile([verifiedJwt.jwt, tonomyJwt]);

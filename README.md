@@ -8,6 +8,8 @@ A reactjs application to show demo flows with Tonomy ID
 
 ## Dependancies
 
+MAKE SURE YOU ARE WORKING FROM THE `DEVELOPMENT` BRANCH!!!
+
 - Linux debian distribution (Ubuntu 20.0.4 LTS used)
 - [Nodejs](https://nodejs.org) v16.4.1+ suggested installed with [nvm](https://github.com/nvm-sh/nvm)
 

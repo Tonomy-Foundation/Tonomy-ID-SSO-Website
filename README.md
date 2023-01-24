@@ -2,6 +2,10 @@
 
 A reactjs application to show demo flows with Tonomy ID
 
+## Staging
+
+<https://tonomy-id-staging.tonomy.foundation>
+
 ## Dependancies
 
 - Linux debian distribution (Ubuntu 20.0.4 LTS used)

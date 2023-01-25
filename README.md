@@ -50,7 +50,7 @@ npm run lint
 
 Set the configuration variables in the desired file in `./src/config`
 
-Config file is choosing based on the value of environment variable `NODE_ENV`. `config.json` is used by default.
+Config file is choosing based on the value of environment variable `REACT_APP_NODE_ENV`. `config.json` is used by default.
 
 Other environment variables override the values in the config file:
 

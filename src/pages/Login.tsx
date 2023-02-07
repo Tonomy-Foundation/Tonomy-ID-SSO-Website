@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { UserApps, setSettings, User, KeyManager } from 'tonomy-id-sdk';
+import { UserApps, setSettings, Communication, randomBytes, randomString } from 'tonomy-id-sdk';
 import QRCode from 'react-qr-code';
 import { TH1, TP } from '../components/THeadings';
 import TImage from '../components/TImage';
@@ -7,9 +7,11 @@ import TProgressCircle from '../components/TProgressCircle';
 import settings from '../settings';
 import { isMobile } from '../utills/IsMobile';
 import JsKeyManager from '../keymanager';
+import { JWTPayload } from 'did-jwt';
 
 setSettings({
     blockchainUrl: settings.config.blockchainUrl,
+    communicationUrl: settings.config.communicationUrl,
 });
 
 const styles = {
@@ -22,38 +24,51 @@ const styles = {
 
 function Login() {
     const [showQR, setShowQR] = useState<string>();
+
     async function sendRequestToMobile(jwtRequests: string[], channel = 'mobile') {
+        const requests = JSON.stringify(jwtRequests);
+
         if (isMobile()) {
-            const requests = JSON.stringify(jwtRequests);
             window.location.replace(`${settings.config.tonomyIdLink}?requests=${requests}`);
 
             // TODO
             // wait 1-2 seconds
             // if this code runs then the link didnt work
+            setTimeout(() => {
+                alert("link didn't work");
+            }, 1000);
         } else {
-            setShowQR(JSON.stringify({ text: 'hello-world' }));
-            // Use communication microservice to send request to mobile
-            // alert('Run on browser to test');
+            const randomSeed = randomString(100);
+            const communication = new Communication();
+
+            communication.SSOWebsiteSendToMobile(randomSeed, requests);
+            setShowQR(randomSeed);
+
+            communication.onJwtToClient((data) => {
+                console.log(data);
+                window.location.replace(
+                    `/callback?requests=${data.requests}&accountName=${data.accountName}&username=nousername`
+                );
+            });
         }
     }
 
     async function handleRequests() {
-        let verifiedJwt;
         try {
-            verifiedJwt = await UserApps.onRedirectLogin();
+            const verifiedJwt = await UserApps.onRedirectLogin();
+
+            const tonomyJwt = (await UserApps.onPressLogin(
+                { callbackPath: '/callback', redirect: false },
+                new JsKeyManager()
+            )) as string;
+
+            sendRequestToMobile([verifiedJwt.jwt, tonomyJwt]);
         } catch (e) {
             alert(e);
             // TODO handle error
 
             return;
         }
-
-        const tonomyJwt = (await UserApps.onPressLogin(
-            { callbackPath: '/callback', redirect: false },
-            new JsKeyManager()
-        )) as string;
-
-        sendRequestToMobile([verifiedJwt.jwt, tonomyJwt]);
 
         //TODO: change the qr to only one when user is loggedin
         /*
@@ -77,6 +92,7 @@ function Login() {
         }
         */
     }
+
     function renderQROrLoading() {
         if (!isMobile()) {
             return (
@@ -84,6 +100,7 @@ function Login() {
                     <TP>Scan the QR code with the Tonomy ID app</TP>
                     {!showQR && <TProgressCircle />}
                     {showQR && <QRCode value={showQR}></QRCode>}
+                    <TP>{showQR}</TP>
                 </>
             );
         } else {

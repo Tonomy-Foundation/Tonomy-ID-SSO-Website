@@ -27,11 +27,13 @@ export default class JsKeyManager implements KeyManager {
     async getKey(options: GetKeyOptions): Promise<PublicKey | null> {
         if (options.level === KeyManagerLevel.BROWSERLOCALSTORAGE) {
             const pv = localStorage.getItem('app.' + options.level);
+
             if (!pv) throw new Error('no key found');
             return PrivateKey.from(pv).toPublic();
         }
 
         const pv = sessionStorage.getItem('app.' + options.level);
+
         if (!pv) throw new Error('no key found');
         return PrivateKey.from(pv).toPublic();
     }
@@ -41,6 +43,7 @@ export default class JsKeyManager implements KeyManager {
             localStorage.removeItem('app.' + options.level);
             return;
         }
+
         sessionStorage.removeItem('app.' + options.level);
         return;
     }

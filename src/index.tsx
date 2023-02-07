@@ -15,6 +15,7 @@ const styles = {
 };
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+
 root.render(
     // this will make components render twice in development to catch errors
     <React.StrictMode>

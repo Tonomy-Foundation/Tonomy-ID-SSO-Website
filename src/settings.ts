@@ -21,6 +21,7 @@ type ConfigType = {
         appleStoreDownload: string;
     };
     tonomyIdLink: string;
+    communicationUrl: string;
 };
 
 type SettingsType = {
@@ -60,6 +61,11 @@ if (process.env.REACT_APP_BLOCKCHAIN_URL) {
 if (process.env.REACT_APP_TONOMY_ID_LINK) {
     console.log(`Using TONOMY_ID_LINK from env:  ${process.env.REACT_APP_TONOMY_ID_LINK}`);
     config.tonomyIdLink = process.env.REACT_APP_TONOMY_ID_LINK;
+}
+
+if (process.env.REACT_APP_COMMUNICATION_URL) {
+    console.log(`Using communication microService from env: ${process.env.REACT_APP_COMMUNICATION_URL}`);
+    config.communicationUrl = process.env.REACT_APP_COMMUNICATION_URL;
 }
 
 settings.config = config;

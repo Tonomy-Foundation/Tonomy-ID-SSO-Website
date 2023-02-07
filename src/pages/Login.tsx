@@ -11,6 +11,7 @@ import { JWTPayload } from 'did-jwt';
 
 setSettings({
     blockchainUrl: settings.config.blockchainUrl,
+    communicationUrl: settings.config.communicationUrl,
 });
 
 const styles = {

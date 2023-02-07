@@ -24,8 +24,10 @@ const styles = {
 
 function Login() {
     const [showQR, setShowQR] = useState<string>();
+
     async function sendRequestToMobile(jwtRequests: string[], channel = 'mobile') {
         const requests = JSON.stringify(jwtRequests);
+
         if (isMobile()) {
             window.location.replace(`${settings.config.tonomyIdLink}?requests=${requests}`);
 
@@ -38,6 +40,7 @@ function Login() {
         } else {
             const randomSeed = randomString(100);
             const communication = new Communication();
+
             communication.SSOWebsiteSendToMobile(randomSeed, requests);
             setShowQR(randomSeed);
 
@@ -89,6 +92,7 @@ function Login() {
         }
         */
     }
+
     function renderQROrLoading() {
         if (!isMobile()) {
             return (

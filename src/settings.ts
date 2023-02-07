@@ -1,4 +1,5 @@
 const env = process.env.REACT_APP_NODE_ENV || 'development';
+
 console.log(`REACT_APP_NODE_ENV=${env}`);
 
 type ConfigType = {

@@ -11,17 +11,21 @@ export default function CallBackPage() {
     async function verifyRequests() {
         console.log('test');
         const { result, accountName, username } = await UserApps.onAppRedirectVerifyRequests();
+
         console.log(result, accountName);
         const redirectJwt = result.find((jwtVerified) => jwtVerified.payload.origin !== location.origin);
         const ssoJwt = result.find((jwtVerified) => jwtVerified.payload.origin === location.origin);
+
         if (!redirectJwt) {
             console.log('test');
             throw new Error("JWT isn't correct");
             //TODO: handle this here
         }
+
         if (ssoJwt) {
             try {
                 const verifiedLoginSso = await UserApps.verifyKeyExistsForApp(accountName, new JsKeyManager());
+
                 if (verifiedLoginSso) localStorage.setItem('loggedIn', 'true');
             } catch (e) {
                 // TODO only catch the 404 error and show nothing
@@ -35,6 +39,7 @@ export default function CallBackPage() {
             redirectJwtPayload.callbackPath +
             `?username=${username}&accountName=${accountName}&requests=` +
             JSON.stringify([redirectJwt.jwt]);
+
         location.replace(url);
     }
 

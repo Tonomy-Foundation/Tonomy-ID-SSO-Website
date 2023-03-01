@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { UserApps, setSettings, Communication, randomBytes, randomString } from 'tonomy-id-sdk';
+import { UserApps, setSettings, Communication, Message } from '@tonomy/tonomy-id-sdk';
 import QRCode from 'react-qr-code';
 import { TH1, TP } from '../components/THeadings';
 import TImage from '../components/TImage';
@@ -7,7 +7,6 @@ import TProgressCircle from '../components/TProgressCircle';
 import settings from '../settings';
 import { isMobile } from '../utills/IsMobile';
 import JsKeyManager from '../keymanager';
-import { JWTPayload } from 'did-jwt';
 
 setSettings({
     blockchainUrl: settings.config.blockchainUrl,
@@ -25,7 +24,7 @@ const styles = {
 function Login() {
     const [showQR, setShowQR] = useState<string>();
 
-    async function sendRequestToMobile(jwtRequests: string[], channel = 'mobile') {
+    async function sendRequestToMobile(jwtRequests: string[]) {
         const requests = JSON.stringify(jwtRequests);
 
         if (isMobile()) {
@@ -38,18 +37,21 @@ function Login() {
                 alert("link didn't work");
             }, 1000);
         } else {
-            const randomSeed = randomString(100);
             const communication = new Communication();
+            const message = new Message(jwtRequests[1]);
+            const did = message.getSender();
 
-            communication.SSOWebsiteSendToMobile(randomSeed, requests);
-            setShowQR(randomSeed);
+            setShowQR(did);
 
-            communication.onJwtToClient((data) => {
-                console.log(data);
-                window.location.replace(
-                    `/callback?requests=${data.requests}&accountName=${data.accountName}&username=nousername`
-                );
-            });
+            const result = await communication.login(message);
+
+            console.log(result);
+            // communication.onJwtToClient((data) => {
+            //     console.log(data);
+            //     window.location.replace(
+            //         `/callback?requests=${data.requests}&accountName=${data.accountName}&username=nousername`
+            //     );
+            // });
         }
     }
 
@@ -100,7 +102,6 @@ function Login() {
                     <TP>Scan the QR code with the Tonomy ID app</TP>
                     {!showQR && <TProgressCircle />}
                     {showQR && <QRCode value={showQR}></QRCode>}
-                    <TP>{showQR}</TP>
                 </>
             );
         } else {

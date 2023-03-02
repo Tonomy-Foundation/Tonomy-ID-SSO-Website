@@ -17,7 +17,7 @@ module.exports = function override(config, env) {
         console.log('Local environment detected, using local Tonomy-ID-SDK');
 
         const aliasConfigModifier = aliasDangerous({
-            'tonomy-id-sdk': __dirname + '/../Tonomy-ID-SDK',
+            '@tonomy/tonomy-id-sdk': __dirname + '/../Tonomy-ID-SDK',
         });
 
         aliasConfigModifier(config);

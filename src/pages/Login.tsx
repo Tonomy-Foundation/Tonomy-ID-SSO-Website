@@ -38,14 +38,33 @@ function Login() {
             }, 1000);
         } else {
             const communication = new Communication();
-            const message = new Message(jwtRequests[1]);
-            const did = message.getSender();
+            const logInMessage = new Message(jwtRequests[1]);
+            const did = logInMessage.getSender();
 
             setShowQR(did);
 
-            const result = await communication.login(message);
+            await communication.login(logInMessage);
 
-            console.log(result);
+            communication.subscribeMessage(async (m) => {
+                const message = new Message(m);
+
+                if (message.getPayload().type === 'ack') {
+                    const message = await UserApps.signMessage(
+                        {
+                            requests: jwtRequests,
+                        },
+                        new JsKeyManager()
+                    );
+
+                    communication.sendMessage(message);
+                } else {
+                    window.location.replace(
+                        `/callback?requests=${message.getPayload().requests}&accountName=${
+                            message.getPayload().accountName
+                        }&username=nousername`
+                    );
+                }
+            });
             // communication.onJwtToClient((data) => {
             //     console.log(data);
             //     window.location.replace(

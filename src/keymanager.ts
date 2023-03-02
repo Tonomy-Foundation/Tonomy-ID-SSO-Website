@@ -1,9 +1,40 @@
 import { PublicKey, PrivateKey, Checksum256, Signature } from '@greymass/eosio';
-import { GetKeyOptions, KeyManager, KeyManagerLevel, SignDataOptions, StoreKeyOptions } from 'tonomy-id-sdk';
+import {
+    ES256KSigner,
+    GetKeyOptions,
+    KeyManager,
+    KeyManagerLevel,
+    sha256,
+    SignDataOptions,
+    StoreKeyOptions,
+} from '@tonomy/tonomy-id-sdk';
 
 export default class JsKeyManager implements KeyManager {
-    signData(options: SignDataOptions): Promise<string | Signature> {
-        throw new Error('Method not implemented.');
+    async signData(options: SignDataOptions): Promise<string | Signature> {
+        const pv = localStorage.getItem('app.' + options.level);
+
+        if (!pv) throw new Error('No key for this level');
+
+        const privateKey = PrivateKey.from(pv);
+
+        if (options.outputType === 'jwt') {
+            if (typeof options.data !== 'string') throw new Error('data must be a string');
+            const signer = ES256KSigner(privateKey.data.array, true);
+
+            return (await signer(options.data)) as string;
+        } else {
+            let digest: Checksum256;
+
+            if (typeof options.data === 'string') {
+                digest = Checksum256.hash(Buffer.from(options.data));
+            } else {
+                digest = options.data as Checksum256;
+            }
+
+            const signature = privateKey.signDigest(digest);
+
+            return signature;
+        }
     }
     generateRandomPrivateKey(): PrivateKey {
         throw new Error('Method not implemented.');

@@ -51,6 +51,7 @@ function Login() {
                 console.log('recieved', message);
 
                 if (message.getPayload().type === 'ack') {
+                    //TODO: save the sender did
                     const requestMessage = await UserApps.signMessage(
                         {
                             requests: jwtRequests,

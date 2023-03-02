@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { UserApps, setSettings, Communication, Message } from '@tonomy/tonomy-id-sdk';
+import { UserApps, setSettings, Communication, Message, KeyManagerLevel } from '@tonomy/tonomy-id-sdk';
 import QRCode from 'react-qr-code';
 import { TH1, TP } from '../components/THeadings';
 import TImage from '../components/TImage';
@@ -45,18 +45,22 @@ function Login() {
 
             await communication.login(logInMessage);
 
-            communication.subscribeMessage(async (m) => {
-                const message = new Message(m);
+            communication.subscribeMessage(async (responseMessage) => {
+                const message = new Message(responseMessage);
+
+                console.log('recieved', message);
 
                 if (message.getPayload().type === 'ack') {
-                    const message = await UserApps.signMessage(
+                    const requestMessage = await UserApps.signMessage(
                         {
                             requests: jwtRequests,
                         },
-                        new JsKeyManager()
+                        new JsKeyManager(),
+                        KeyManagerLevel.BROWSERLOCALSTORAGE,
+                        message.getSender()
                     );
 
-                    communication.sendMessage(message);
+                    communication.sendMessage(requestMessage);
                 } else {
                     window.location.replace(
                         `/callback?requests=${message.getPayload().requests}&accountName=${

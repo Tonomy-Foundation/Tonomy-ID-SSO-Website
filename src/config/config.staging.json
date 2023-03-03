@@ -19,5 +19,5 @@
         "appleStoreDownload": "#"
     },
     "tonomyIdLink": "tonomy-id-staging://SSO",
-    "communicationUrl": "ws://staging.communcaion"
+    "communicationUrl": "wss://communication-api-staging.tonomy.foundation"
 }

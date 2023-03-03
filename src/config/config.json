@@ -19,5 +19,5 @@
         "appleStoreDownload": "#"
     },
     "tonomyIdLink": "tonomy-id-development://SSO",
-    "communicationUrl": "ws://staging.communcaion"
+    "communicationUrl": "ws://localhost:5000"
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { UserApps, setSettings, Communication, randomBytes, randomString } from 'tonomy-id-sdk';
+import { UserApps, setSettings, Communication, Message, KeyManagerLevel } from '@tonomy/tonomy-id-sdk';
 import QRCode from 'react-qr-code';
 import { TH1, TP } from '../components/THeadings';
 import TImage from '../components/TImage';
@@ -7,7 +7,6 @@ import TProgressCircle from '../components/TProgressCircle';
 import settings from '../settings';
 import { isMobile } from '../utills/IsMobile';
 import JsKeyManager from '../keymanager';
-import { JWTPayload } from 'did-jwt';
 
 setSettings({
     blockchainUrl: settings.config.blockchainUrl,
@@ -25,7 +24,7 @@ const styles = {
 function Login() {
     const [showQR, setShowQR] = useState<string>();
 
-    async function sendRequestToMobile(jwtRequests: string[], channel = 'mobile') {
+    async function sendRequestToMobile(jwtRequests: string[]) {
         const requests = JSON.stringify(jwtRequests);
 
         if (isMobile()) {
@@ -38,17 +37,46 @@ function Login() {
                 alert("link didn't work");
             }, 1000);
         } else {
-            const randomSeed = randomString(100);
             const communication = new Communication();
+            const logInMessage = new Message(jwtRequests[1]);
+            const did = logInMessage.getSender();
 
-            communication.SSOWebsiteSendToMobile(randomSeed, requests);
-            setShowQR(randomSeed);
+            setShowQR(did);
 
-            communication.onJwtToClient((data) => {
-                console.log(data);
-                window.location.replace(
-                    `/callback?requests=${data.requests}&accountName=${data.accountName}&username=nousername`
-                );
+            /**
+             * sending login requests flow
+             * at first the website logins and wait for the login results
+             * then it subscribe for new messages from the server
+             * if the message has type ack which means other client is awaiting for message from this client
+             * then this client sends the requests to the ack client
+             * else means the requests are authenticated and we can redirect back to the callback request
+             */
+            await communication.login(logInMessage);
+
+            communication.subscribeMessage(async (responseMessage) => {
+                const message = new Message(responseMessage);
+
+                console.log('recieved', message);
+
+                if (message.getPayload().type === 'ack') {
+                    //TODO: save the sender did
+                    const requestMessage = await UserApps.signMessage(
+                        {
+                            requests: jwtRequests,
+                        },
+                        new JsKeyManager(),
+                        KeyManagerLevel.BROWSERLOCALSTORAGE,
+                        message.getSender()
+                    );
+
+                    communication.sendMessage(requestMessage);
+                } else {
+                    window.location.replace(
+                        `/callback?requests=${message.getPayload().requests}&accountName=${
+                            message.getPayload().accountName
+                        }&username=nousername`
+                    );
+                }
             });
         }
     }
@@ -100,7 +128,6 @@ function Login() {
                     <TP>Scan the QR code with the Tonomy ID app</TP>
                     {!showQR && <TProgressCircle />}
                     {showQR && <QRCode value={showQR}></QRCode>}
-                    <TP>{showQR}</TP>
                 </>
             );
         } else {

@@ -43,6 +43,14 @@ function Login() {
 
             setShowQR(did);
 
+            /**
+             * sending login requests flow
+             * at first the website logins and wait for the login results
+             * then it subscribe for new messages from the server
+             * if the message has type ack which means other client is awaiting for message from this client
+             * then this client sends the requests to the ack client
+             * else means the requests are authenticated and we can redirect back to the callback request
+             */
             await communication.login(logInMessage);
 
             communication.subscribeMessage(async (responseMessage) => {
@@ -70,12 +78,6 @@ function Login() {
                     );
                 }
             });
-            // communication.onJwtToClient((data) => {
-            //     console.log(data);
-            //     window.location.replace(
-            //         `/callback?requests=${data.requests}&accountName=${data.accountName}&username=nousername`
-            //     );
-            // });
         }
     }
 

@@ -3,12 +3,19 @@ import Home from '../pages/Home';
 import CallBackPage from '../pages/CallBack';
 import DownloadApp from '../pages/DownloadApp';
 import Login from '../pages/Login';
+import Loading from '../pages/Loading';
+import AppDetails from '../pages/AppDetails';
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <Home />,
     },
+    {
+        path: '/loading',
+        element: <Loading />,
+    },
+
     {
         path: '/login',
         element: <Login />,
@@ -17,6 +24,11 @@ const router = createBrowserRouter([
         path: '/download',
         element: <DownloadApp />,
     },
+    {
+        path: '/appDetails',
+        element: <AppDetails />,
+    },
+
     {
         path: '/callback',
         element: <CallBackPage />,
